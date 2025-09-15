@@ -7,11 +7,16 @@ type SignInResult = {
   message?: string;
 };
 
-export const signInAction = async (formData: FormData): Promise<SignInResult> => {
+export const signInAction = async (
+  formData: FormData
+): Promise<SignInResult> => {
   try {
     const identifier = formData.get("identifier")?.toString() || "";
     const password = formData.get("password")?.toString() || "";
-    console.log("Starting sign-in action with Form Data:", { identifier, password });
+    console.log("Starting sign-in action with Form Data:", {
+      identifier,
+      password,
+    });
 
     // Explicitly call signIn with credentials provider
     console.log("Calling signIn with credentials...");

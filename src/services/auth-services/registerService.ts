@@ -4,7 +4,6 @@ export const registerUser = async (
   username: string,
   email: string,
   password: string,
-  
   role: string = "STUDENT" // Default role
 ) => {
   try {
