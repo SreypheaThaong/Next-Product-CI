@@ -77,7 +77,7 @@ spec:
               try{
                 sh "rm -rf nextjs-manifest || true"
                 // Clone the repository
-                sh 'git clone https://${GIT_USERNAME}:${GIT_PASSWORD}@{GIT_REPO} nextjs-manifest'
+               sh 'git clone https://$GIT_USERNAME:$GIT_PASSWORD@$GIT_REPO nextjs-manifest'
                 sh """
                 cd nextjs-manifest
                 sed -i 's|tag: .*|tag: "${IMAGE_TAG}"|' values.yaml
