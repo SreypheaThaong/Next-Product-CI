@@ -53,7 +53,7 @@ spec:
                     sh 'echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin'
                     echo '✅ Docker login successful.'
                     // Tag image
-                    sh "docker tag my-nextjs-app:${env.IMAGE_TAG} ${env.REGISTRY}/nextjs-app:${env.IMAGE_TAG}"
+                    sh "docker tag my-nextjs-app:${MAGE_TAG} ${DOCKER_USERNAME}/nextjs-app:${IMAGE_TAG}"
                     // Push
                     sh "docker push ${env.REGISTRY}/nextjs-app:${env.IMAGE_TAG}"
                     echo '✅ Push image to DockerHub successfully.'
