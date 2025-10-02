@@ -37,6 +37,7 @@ spec:
     }
     environment {
       IMAGE_TAG = "${bUILD_NUMBER}"
+      DOCKER_IMAGE = "nextjs-app"
     }
     stages {
          // Build image and push to DockerHub
@@ -47,16 +48,16 @@ spec:
                 withCredentials([usernamePassword(credentialsId: 'docker-token', usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
                    try {
                     // Build image
-                    sh "docker build -t my-nextjs-app:${env.IMAGE_TAG} ."
-                    echo '✅ Docker image built successfully.'
+                    sh "docker build -t {.env.DOCKER_IMAGE}:${env.IMAGE_TAG} ."
+                    echo '✅ Docker image: ${env.DOCKER_IMAGE} built successfully.'
                     // Login
                     sh 'echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin'
-                    echo '✅ Docker login successful.'
+                    echo '✅ Docker login to "$DOCKERHUB_USERNAME" successful.'
                     // Tag image
-                    sh "docker tag my-nextjs-app:${MAGE_TAG} ${DOCKER_USERNAME}/nextjs-app:${IMAGE_TAG}"
+                    sh "docker tag ${env.DOCKER_IMAGE}:${env.IMAGE_TAG} ${DOCKER_USERNAME}/${.env.DOCKER_IMAGE}:${env.IMAGE_TAG}"
                     // Push
-                    sh "docker push ${env.REGISTRY}/nextjs-app:${env.IMAGE_TAG}"
-                    echo '✅ Push image to DockerHub successfully.'
+                    sh "docker push "$DOCKERHUB_USERNAME"/${env.DOCKER_IMAGE}:${env.IMAGE_TAG}"
+                    echo '✅ Push image: "$DOCKERHUB_USERNAME"/${env.DOCKER_IMAGE}:${env.IMAGE_TAG} to DockerHub successfully.'
                 } catch (err) {
                     error "❌ Pipeline failed: ${err.getMessage()}"
                 }
