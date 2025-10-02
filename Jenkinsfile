@@ -31,7 +31,7 @@ spec:
 
     stages {
 
-         // Build image
+         // Build image and push to DockerHub
         stage('Build Docker Image') {
             steps {
                 container('docker') {
