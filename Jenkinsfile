@@ -52,7 +52,7 @@ spec:
                     // Login
                     sh 'docker login -u ${DOCKER_USERNAME} --password-stdin'
                     echo '✅ Docker login successful.'
-                    // Tag
+                    // Tag image
                     sh "docker tag my-nextjs-app:${env.IMAGE_TAG} ${env.REGISTRY}/nextjs-app:${env.IMAGE_TAG}"
                     // Push
                     sh "docker push ${env.REGISTRY}/nextjs-app:${env.IMAGE_TAG}"
