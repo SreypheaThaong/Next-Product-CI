@@ -50,7 +50,7 @@ spec:
                     // Build image
                     sh "docker build -t {.env.DOCKER_IMAGE}:${env.IMAGE_TAG} ."
                     echo '✅ Docker image: ${env.DOCKER_IMAGE} built successfully.'
-                    // Login
+                    // Login to DockerHub
                     sh 'echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin'
                     echo '✅ Docker login to "$DOCKERHUB_USERNAME" successful.'
                     // Tag image
