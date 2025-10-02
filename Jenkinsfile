@@ -38,7 +38,7 @@ spec:
     environment {
       IMAGE_TAG = "${bUILD_NUMBER}"
       DOCKER_IMAGE = "nextjs-app"
-      GIT_REPO = "https://github.com/Solen-s/frontend-manifest.git"
+      GIT_REPO = "github.com/Solen-s/frontend-manifest.git"
     }
     stages {
          // Build image and push to DockerHub
