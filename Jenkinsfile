@@ -57,7 +57,7 @@ spec:
                     sh "docker tag ${env.DOCKER_IMAGE}:${env.IMAGE_TAG} ${DOCKERHUB_USERNAME}/${env.DOCKER_IMAGE}:${env.IMAGE_TAG}"
                     // Push image to Dockerhub
                     sh "docker push ${DOCKERHUB_USERNAME}/${env.DOCKER_IMAGE}:${env.IMAGE_TAG}"
-                    echo "✅ Push image: ${$DOCKERHUB_USERNAME}/${env.DOCKER_IMAGE}:${env.IMAGE_TAG} to DockerHub successfully."
+                    echo "✅ Push image: ${env.DOCKER_IMAGE}:${env.IMAGE_TAG} to DockerHub successfully."
                 } catch (err) {
                     error "❌ Pipeline failed: ${err.getMessage()}"
                 }
