@@ -29,7 +29,7 @@ spec:
     volumes:
       - name: workspace-volume
         emptyDir: {}
-      - name:docker-socket
+      - name: docker-socket
         hostPath:
           path: /var/run/docker.sock
         """
