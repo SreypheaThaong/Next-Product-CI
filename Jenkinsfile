@@ -38,6 +38,7 @@ spec:
     environment {
       IMAGE_TAG = "${bUILD_NUMBER}"
       DOCKER_IMAGE = "nextjs-app"
+      GIT_REPO = "https://github.com/Solen-s/frontend-manifest.git"
     }
     stages {
          // Build image and push to DockerHub
@@ -63,6 +64,32 @@ spec:
                 }
                 }
             }
+        }
+      }
+    }
+
+    // This ArgoCD stage
+    stage('Update helm chart and deploy to Kubernetes') {
+      steps {
+        container('git') {
+          script {
+            withCredentials([usernamePassword(credentialsId: 'git_token', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
+              try{
+                sh "rm -rf nextjs-manifest || true"
+                // Clone the repository
+                sh 'git clone https://${GIT_USERNAME}:${GIT_PASSWORD}@{GIT_REPO} nextjs-manifest'
+                sh """
+                cd nextjs-manifest
+                sed -i 's|tag: .*|tag: "${IMAGE_TAG}"|' values.yaml
+                git add values.yaml
+                git commit -m "Update application tag to ${IMAGE_TAG}"
+                git push origin main
+                """
+              }catch (err) {
+                error "❌ Pipeline failed: ${err.getMessage()}"
+              }
+            }
+          }
         }
       }
     }
