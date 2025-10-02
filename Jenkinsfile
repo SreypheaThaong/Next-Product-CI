@@ -38,14 +38,11 @@ spec:
                     // Build
                     sh "docker build -t my-nextjs-app:${env.IMAGE_TAG} ."
                     echo '✅ Docker image built successfully.'
-
                     // Login
                     sh "docker login -u ${env.DOCKER_USERNAME} -p ${env.DOCKER_PASSWORD}"
                     echo '✅ Docker login successful.'
-
                     // Tag
                     sh "docker tag my-nextjs-app:${env.IMAGE_TAG} ${env.REGISTRY}/nextjs-app:${env.IMAGE_TAG}"
-
                     // Push
                     sh "docker push ${env.REGISTRY}/nextjs-app:${env.IMAGE_TAG}"
                     echo '✅ Push image to DockerHub successfully.'
