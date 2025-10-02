@@ -34,12 +34,13 @@ spec:
       steps {
         container('docker') {
             script {
-                try {
+                withCredentials([usernamePassword(credentialsId: 'docker-token', usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
+                   try {
                     // Build
                     sh "docker build -t my-nextjs-app:${env.IMAGE_TAG} ."
                     echo '✅ Docker image built successfully.'
                     // Login
-                    sh "docker login -u ${env.DOCKER_USERNAME} -p ${env.DOCKER_PASSWORD}"
+                    sh 'docker login -u ${DOCKER_USERNAME} --password-stdin'
                     echo '✅ Docker login successful.'
                     // Tag
                     sh "docker tag my-nextjs-app:${env.IMAGE_TAG} ${env.REGISTRY}/nextjs-app:${env.IMAGE_TAG}"
@@ -48,6 +49,7 @@ spec:
                     echo '✅ Push image to DockerHub successfully.'
                 } catch (err) {
                     error "❌ Pipeline failed: ${err.getMessage()}"
+                }
                 }
             }
         }
