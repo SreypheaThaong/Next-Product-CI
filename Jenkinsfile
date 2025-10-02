@@ -55,7 +55,7 @@ spec:
                     echo '✅ Docker login to "$DOCKERHUB_USERNAME" successfully.'
                     // Tag image
                     sh "docker tag ${env.DOCKER_IMAGE}:${env.IMAGE_TAG} ${DOCKER_USERNAME}/${env.DOCKER_IMAGE}:${env.IMAGE_TAG}"
-                    // Push image
+                    // Push image to dockerhub
                     sh 'docker push "$DOCKERHUB_USERNAME"/${env.DOCKER_IMAGE}:${env.IMAGE_TAG}'
                     echo '✅ Push image: "$DOCKERHUB_USERNAME"/${env.DOCKER_IMAGE}:${env.IMAGE_TAG} to DockerHub successfully.'
                 } catch (err) {
