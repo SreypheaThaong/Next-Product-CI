@@ -30,32 +30,31 @@ spec:
     }
 
     stages {
-
          // Build image and push to DockerHub
-        stage('Build Docker Image') {
-            steps {
-                container('docker') {
-                    script {
-                        if(  sh 'docker build -t my-nextjs-app:${}.') | true {
-                          echo '✅ Docker image built successfully.'
-                        } else {
-                          echo '❌ Docker image build failed.'
-                        }
-                        if ( sh 'docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD' ) {
-                          echo '✅ Docker login successful.'
-                        } else {
-                          error '❌ Docker login failed.'
-                        }
-                        sh 'docker tag nextjs-app:${IMAGE_TAG} $REGISTRY/nextjs-app:${IMAGE_TAG}'
-                        if ( sh'docker push $REGISTRY/nextjs-app:${IMAGE_TAG}' ) {
-                          echo '✅ Push image to DockerHub successfully.'
-                        } else {
-                          error '❌ Push image to DockerHub failed.'
-                        }
-                    }
+    stage('Build Docker Image') {
+      steps {
+        container('docker') {
+            script {
+                try {
+                    // Build
+                    sh "docker build -t my-nextjs-app:${env.IMAGE_TAG} ."
+                    echo '✅ Docker image built successfully.'
+
+                    // Login
+                    sh "docker login -u ${env.DOCKER_USERNAME} -p ${env.DOCKER_PASSWORD}"
+                    echo '✅ Docker login successful.'
+
+                    // Tag
+                    sh "docker tag my-nextjs-app:${env.IMAGE_TAG} ${env.REGISTRY}/nextjs-app:${env.IMAGE_TAG}"
+
+                    // Push
+                    sh "docker push ${env.REGISTRY}/nextjs-app:${env.IMAGE_TAG}"
+                    echo '✅ Push image to DockerHub successfully.'
+                } catch (err) {
+                    error "❌ Pipeline failed: ${err.getMessage()}"
                 }
             }
         }
-
+      }
     }
 }
