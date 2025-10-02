@@ -36,7 +36,7 @@ spec:
             script {
                 withCredentials([usernamePassword(credentialsId: 'docker-token', usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
                    try {
-                    // Build
+                    // Build image
                     sh "docker build -t my-nextjs-app:${env.IMAGE_TAG} ."
                     echo '✅ Docker image built successfully.'
                     // Login
