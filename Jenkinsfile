@@ -48,7 +48,7 @@ spec:
                 withCredentials([usernamePassword(credentialsId: 'docker-token', usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
                    try {
                     // Build image
-                    sh "docker build -t {.env.DOCKER_IMAGE}:${env.IMAGE_TAG} ."
+                    sh "docker build -t ${.env.DOCKER_IMAGE}:${env.IMAGE_TAG} ."
                     echo '✅ Docker image: ${env.DOCKER_IMAGE} built successfully.'
                     // Login to DockerHub
                     sh 'echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin'
@@ -56,7 +56,7 @@ spec:
                     // Tag image
                     sh "docker tag ${env.DOCKER_IMAGE}:${env.IMAGE_TAG} ${DOCKER_USERNAME}/${env.DOCKER_IMAGE}:${env.IMAGE_TAG}"
                     // Push image
-                    sh "docker push "$DOCKERHUB_USERNAME"/${env.DOCKER_IMAGE}:${env.IMAGE_TAG}"
+                    sh 'docker push "$DOCKERHUB_USERNAME"/${env.DOCKER_IMAGE}:${env.IMAGE_TAG}'
                     echo '✅ Push image: "$DOCKERHUB_USERNAME"/${env.DOCKER_IMAGE}:${env.IMAGE_TAG} to DockerHub successfully.'
                 } catch (err) {
                     error "❌ Pipeline failed: ${err.getMessage()}"
