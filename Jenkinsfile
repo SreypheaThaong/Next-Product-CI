@@ -28,7 +28,6 @@ spec:
     environment {
       IMAGE_TAG = "${bUILD_NUMBER}"
     }
-
     stages {
          // Build image and push to DockerHub
     stage('Build Docker Image') {
