@@ -1,7 +1,7 @@
 pipeline {
     agent {
       kubernetes {
-        yamlFile """
+        yaml """
 apiVersion: v1
 kind: Pod
 spec:
@@ -26,13 +26,13 @@ spec:
         - name: workspace-volume
           mountPath: /workspace
 
-    volumes:
-      - name: workspace-volume
-        emptyDir: {}
-      - name: docker-socket
-        hostPath:
-          path: /var/run/docker.sock
-        """
+  volumes:
+    - name: workspace-volume
+      emptyDir: {}
+    - name: docker-socket
+      hostPath:
+        path: /var/run/docker.sock
+"""
       }
     }
     environment {
