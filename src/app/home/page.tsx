@@ -4,7 +4,7 @@ import React from "react";
 
 export default function HomePage() {
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-blue-200 via-green-100 to-cyan-200">
+    <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-blue-200 via-green-200 to-cyan-200">
       {/* Glass Card Container */}
       <div className="bg-white/20 backdrop-blur-lg border border-cyan/40 shadow-xl rounded-2xl w-full max-w-lg p-8 text-center">
         <h1 className="text-3xl font-bold text-gray-900 mb-4">
