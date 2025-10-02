@@ -16,6 +16,16 @@ spec:
           mountPath: /var/run/docker.sock
         - name: workspace-volume
           mountPath: /workspace
+    - name: git
+      image: alpine/git
+      command:
+        - cat
+      tty: true
+      workingDir: /workspace
+      volumeMounts:
+        - name: workspace-volume
+          mountPath: /workspace
+
     volumes:
       - name: workspace-volume
         emptyDir: {}
