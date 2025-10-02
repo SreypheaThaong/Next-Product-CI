@@ -53,9 +53,9 @@ spec:
                     // Login to DockerHub
                     sh 'echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin'
                     echo '✅ Docker login to "$DOCKERHUB_USERNAME" successfully.'
-                    // Tag image
+                    // Tag of image
                     sh "docker tag ${env.DOCKER_IMAGE}:${env.IMAGE_TAG} ${DOCKER_USERNAME}/${env.DOCKER_IMAGE}:${env.IMAGE_TAG}"
-                    // Push image to dockerhub
+                    // Push image to Dockerhub
                     sh 'docker push "$DOCKERHUB_USERNAME"/${env.DOCKER_IMAGE}:${env.IMAGE_TAG}'
                     echo '✅ Push image: "$DOCKERHUB_USERNAME"/${env.DOCKER_IMAGE}:${env.IMAGE_TAG} to DockerHub successfully.'
                 } catch (err) {
