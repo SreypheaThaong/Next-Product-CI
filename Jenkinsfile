@@ -48,11 +48,11 @@ spec:
                 withCredentials([usernamePassword(credentialsId: 'docker-token', usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
                    try {
                     // Build image
-                    sh "docker build -t ${.env.DOCKER_IMAGE}:${env.IMAGE_TAG} ."
+                    sh "docker build -t ${env.DOCKER_IMAGE}:${env.IMAGE_TAG} ."
                     echo '✅ Docker image: ${env.DOCKER_IMAGE} built successfully.'
                     // Login to DockerHub
                     sh 'echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin'
-                    echo '✅ Docker login to "$DOCKERHUB_USERNAME" successful.'
+                    echo '✅ Docker login to "$DOCKERHUB_USERNAME" successfully.'
                     // Tag image
                     sh "docker tag ${env.DOCKER_IMAGE}:${env.IMAGE_TAG} ${DOCKER_USERNAME}/${env.DOCKER_IMAGE}:${env.IMAGE_TAG}"
                     // Push image
