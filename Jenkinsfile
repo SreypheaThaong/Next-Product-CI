@@ -39,6 +39,8 @@ spec:
       IMAGE_TAG = "${bUILD_NUMBER}"
       DOCKER_IMAGE = "nextjs-app"
       GIT_REPO = "github.com/Solen-s/frontend-manifest.git"
+      EMAIL= "solen0918@gmail.com"
+      NAME= "Solen-s"
     }
     stages {
          // Build image and push to DockerHub
@@ -81,6 +83,8 @@ spec:
                 sh """
                 cd nextjs-manifest
                 sed -i 's|tag: .*|tag: "${IMAGE_TAG}"|' values.yaml
+                git config --global user.email "${env.EMAIL}"
+                git config --global user.name "${env.NAME}"
                 git add values.yaml
                 git commit -m "Update application tag to ${IMAGE_TAG}"
                 git push origin main
