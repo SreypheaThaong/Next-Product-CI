@@ -48,28 +48,36 @@ pipeline {
         }
 
         stage('Update Helm Repo for CD') {
-            steps {
-                script {
-                    withCredentials([usernamePassword(credentialsId: 'github-token', 
-                                                      usernameVariable: 'GIT_USER', 
-                                                      passwordVariable: 'GIT_PASS')]) {
-                        sh '''
-                            rm -rf CD-next-service
-                            git clone https://$GIT_USER:$GIT_PASS@github.com/SreypheaThaong/Next-Product-CD
-                            cd Next-Product-CD/next
-                            
-                            # update values.yaml with new image tag
-                            sed -i "s|tag:.*|tag: \\"${BUILD_NUMBER}\\"|" values.yaml
-                            
-                            git config user.email "thaong.sreyphea17@gmail.com"
-                            git config user.name "SreypheaThaong"
-                            git add values.yaml
-                            git commit -m "Update Next.js image tag to ${BUILD_NUMBER}"
-                            git push origin main
-                        '''
-                    }
-                }
+    steps {
+        script {
+            withCredentials([usernamePassword(credentialsId: 'github-token', 
+                                              usernameVariable: 'GIT_USER', 
+                                              passwordVariable: 'GIT_PASS')]) {
+                sh '''
+                    if [ -d "Next-Product-CD" ]; then
+                        cd Next-Product-CD
+                        git reset --hard
+                        git pull origin main
+                    else
+                        git clone https://$GIT_USER:$GIT_PASS@github.com/SreypheaThaong/Next-Product-CD
+                        cd Next-Product-CD
+                    fi
+
+                    cd next
+
+                    # update values.yaml with new image tag
+                    sed -i "s|tag:.*|tag: \\"${BUILD_NUMBER}\\"|" values.yaml
+
+                    git config user.email "thaong.sreyphea17@gmail.com"
+                    git config user.name "SreypheaThaong"
+                    git add values.yaml
+                    git commit -m "Update Next.js image tag to ${BUILD_NUMBER}"
+                    git push origin main
+                '''
             }
         }
+    }
+}
+
     }
 }
