@@ -1,9 +1,14 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'node:18'   // official Node.js Docker image
+            args '-u root:root' // run as root so npm install works
+        }
+    }
 
     environment {
         DOCKER_CREDENTIALS = credentials('dockerhub-token')
-        IMAGE = "phea12/next-homework-image"   
+        IMAGE = "phea12/next-homework-image"
     }
 
     stages {
@@ -31,46 +36,13 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 script {
-                    try {
-                        if (sh(script: 'echo $DOCKER_CREDENTIALS_PSW | docker login -u $DOCKER_CREDENTIALS_USR --password-stdin', returnStatus: true) == 0) {
-                            echo "Docker login successful."
-
-                            if (sh(script: "docker push $IMAGE:${BUILD_NUMBER}", returnStatus: true) == 0) {
-                                echo "Docker image pushed successfully."
-                            } else {
-                                error("Docker push failed.")
-                            }
-
-                        } else {
-                            error("Docker login failed.")
-                        }
-                    } catch (err) {
-                        error("Error during Docker push: ${err}")
+                    if (sh(script: 'echo $DOCKER_CREDENTIALS_PSW | docker login -u $DOCKER_CREDENTIALS_USR --password-stdin', returnStatus: true) == 0) {
+                        sh "docker push $IMAGE:${BUILD_NUMBER}"
+                    } else {
+                        error("Docker login failed")
                     }
                 }
             }
         }
-
-        // stage('Update Helm Repo') {
-        //     steps {
-        //         script {
-        //             withCredentials([usernamePassword(credentialsId: 'github-token',
-        //                                               usernameVariable: 'GIT_USER',
-        //                                               passwordVariable: 'GIT_PASS')]) {
-        //                 sh '''
-        //                     rm -rf CD-product-service
-        //                     git clone https://$GIT_USER:$GIT_PASS@github.com/SreypheaThaong/CD-product-service.git
-        //                     cd CD-product-service
-        //                     # update Next.js image tag in values.yaml
-        //                     sed -i "s|tag:.*|tag: \\"${BUILD_NUMBER}\\"|" values.yaml
-        //                     git config user.email "thaong.sreyphea17@gmail.com"
-        //                     git config user.name "SreypheaThaong"
-        //                     git commit -am "Update Next.js image tag to ${BUILD_NUMBER}"
-        //                     git push origin main
-        //                 '''
-        //             }
-        //         }
-        //     }
-        // }
     }
 }
