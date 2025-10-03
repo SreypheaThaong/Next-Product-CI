@@ -1,10 +1,5 @@
 pipeline {
-    agent {
-        docker {
-            image 'node:18'   // official Node.js Docker image
-            args '-u root:root' // run as root so npm install works
-        }
-    }
+    agent any
 
     environment {
         DOCKER_CREDENTIALS = credentials('dockerhub-token')
@@ -19,6 +14,12 @@ pipeline {
         }
 
         stage('Install & Build Next.js') {
+            agent {
+                docker {
+                    image 'node:18'
+                    args '-u root:root'
+                }
+            }
             steps {
                 sh '''
                     npm install
