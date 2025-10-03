@@ -55,8 +55,8 @@ pipeline {
                                                       passwordVariable: 'GIT_PASS')]) {
                         sh '''
                             rm -rf CD-next-service
-                            git clone https://$GIT_USER:$GIT_PASS@github.com/SreypheaThaong/Next-Product-CD
-                            cd Next-Product-CD
+                            git clone https://$GIT_USER:$GIT_PASS@github.com/SreypheaThaong/Next-Product-CD/next
+                            cd Next-Product-CD/next
                             
                             # update values.yaml with new image tag
                             sed -i "s|tag:.*|tag: \\"${BUILD_NUMBER}\\"|" values.yaml
